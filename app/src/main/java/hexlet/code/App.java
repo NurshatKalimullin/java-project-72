@@ -1,5 +1,7 @@
 package hexlet.code;
 
+import hexlet.code.controllers.RootController;
+import hexlet.code.controllers.UrlController;
 import io.javalin.Javalin;
 import io.javalin.plugin.rendering.template.JavalinThymeleaf;
 import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
@@ -12,7 +14,7 @@ import static io.javalin.apibuilder.ApiBuilder.*;
 public class App {
 
     private static int getPort() {
-        String port = System.getenv().getOrDefault("PORT", "3000");
+        String port = System.getenv().getOrDefault("PORT", "3001");
         return Integer.valueOf(port);
     }
 
@@ -23,6 +25,7 @@ public class App {
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
         templateResolver.setPrefix("/templates/");
 
+        templateResolver.setCharacterEncoding("UTF-8");
         templateEngine.addTemplateResolver(templateResolver);
         templateEngine.addDialect(new LayoutDialect());
         templateEngine.addDialect(new Java8TimeDialect());
@@ -31,19 +34,14 @@ public class App {
     }
 
     private static void addRoutes(Javalin app) {
-//        app.get("/", RootController.welcome);
-//        app.get("/about", RootController.about);
-//
-//        app.routes(() -> {
-//            path("articles", () -> {
-//                get(ArticleController.listArticles);
-//                post(ArticleController.createArticle);
-//                get("new", ArticleController.newArticle);
-//                path("{id}", () -> {
-//                    get(ArticleController.showArticle);
-//                });
-//            });
-//        });
+        app.get("/", RootController.welcome);
+
+        app.routes(() -> {
+            path("urls", () -> {
+                get(UrlController.listUrls);
+                post(UrlController.createUrl);
+            });
+        });
     }
 
     public static Javalin getApp() {
@@ -68,10 +66,10 @@ public class App {
     }
 
     public static void main(String[] args) {
-        //Javalin app = getApp();
-        Javalin app = Javalin.create(/*config*/)
-                .get("/", ctx -> ctx.result("Hello World"))
-                .start(7070);
-        //app.start(getPort());
+        Javalin app = getApp();
+        app.start(getPort());
+//        Javalin app = Javalin.create(/*config*/)
+//                .get("/", ctx -> ctx.result("Hello World"))
+//                .start(7070);
     }
 }
