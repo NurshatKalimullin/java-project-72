@@ -7,7 +7,7 @@ import io.ebean.Query;
 import io.ebean.Transaction;
 import io.ebean.typequery.Generated;
 import io.ebean.typequery.PInstant;
-import io.ebean.typequery.PInteger;
+import io.ebean.typequery.PLong;
 import io.ebean.typequery.PString;
 import io.ebean.typequery.TQRootBean;
 import io.ebean.typequery.TypeQueryBean;
@@ -31,7 +31,7 @@ public class QUrl extends TQRootBean<Url,QUrl> {
     return _alias;
   }
 
-  public PInteger<QUrl> id;
+  public PLong<QUrl> id;
   public PString<QUrl> name;
   public PInstant<QUrl> createdAt;
 
@@ -102,7 +102,7 @@ public class QUrl extends TQRootBean<Url,QUrl> {
    * clauses of a query. Typically referenced via static imports. 
    */
   public static class Alias {
-    public static PInteger<QUrl> id = _alias.id;
+    public static PLong<QUrl> id = _alias.id;
     public static PString<QUrl> name = _alias.name;
     public static PInstant<QUrl> createdAt = _alias.createdAt;
   }

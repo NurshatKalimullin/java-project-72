@@ -9,10 +9,10 @@ import javax.persistence.Id;
 import java.time.Instant;
 
 @Entity
-public class Url extends Model {
+public final class Url extends Model {
 
     @Id
-    private int id;
+    private long id;
 
     @NotNull
     private String name;
@@ -21,11 +21,11 @@ public class Url extends Model {
     private Instant createdAt;
 
 
-    public Url(String name) {
-        this.name = name;
+    public Url(String urlName) {
+        name = urlName;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -37,4 +37,12 @@ public class Url extends Model {
         return createdAt;
     }
 
+    @Override
+    public String toString() {
+        return "Url{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", createdAt=" + createdAt +
+                '}';
+    }
 }

@@ -9,12 +9,15 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
-import static io.javalin.apibuilder.ApiBuilder.*;
+import static io.javalin.apibuilder.ApiBuilder.path;
+import static io.javalin.apibuilder.ApiBuilder.get;
+import static io.javalin.apibuilder.ApiBuilder.post;
+
 
 public class App {
 
     private static int getPort() {
-        String port = System.getenv().getOrDefault("PORT", "3001");
+        String port = System.getenv().getOrDefault("PORT", "3000");
         return Integer.valueOf(port);
     }
 
