@@ -43,6 +43,14 @@ public class App {
             path("urls", () -> {
                 get(UrlController.listUrls);
                 post(UrlController.createUrl);
+                path("{id}", () -> {
+                    //GET /urls/{id}
+                    get(UrlController.displayUrl);
+                    path("checks", () -> {
+                        //POST /urls/{id}/checks
+                        post(UrlController.checkUrl);
+                    });
+                });
             });
         });
     }
@@ -71,8 +79,5 @@ public class App {
     public static void main(String[] args) {
         Javalin app = getApp();
         app.start(getPort());
-//        Javalin app = Javalin.create(/*config*/)
-//                .get("/", ctx -> ctx.result("Hello World"))
-//                .start(7070);
     }
 }

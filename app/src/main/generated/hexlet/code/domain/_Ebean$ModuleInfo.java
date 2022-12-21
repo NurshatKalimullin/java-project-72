@@ -9,7 +9,7 @@ import io.ebean.config.ModuleInfo;
 import io.ebean.config.ModuleInfoLoader;
 
 @Generated("io.ebean.querybean.generator")
-@ModuleInfo(entities={"hexlet.code.domain.Url"})
+@ModuleInfo(entities={"hexlet.code.domain.Url","hexlet.code.domain.UrlCheck"})
 public class _Ebean$ModuleInfo implements ModuleInfoLoader {
 
   /**
@@ -25,6 +25,7 @@ public class _Ebean$ModuleInfo implements ModuleInfoLoader {
   private List<Class<?>> defaultEntityClasses() {
     List<Class<?>> entities = new ArrayList<>();
     entities.add(hexlet.code.domain.Url.class);
+    entities.add(hexlet.code.domain.UrlCheck.class);
     return entities;
   }
 

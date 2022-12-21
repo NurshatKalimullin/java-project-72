@@ -20,7 +20,7 @@
           <tr  th:each="url : ${urls}" th:object="${url}">
             <td th:text="*{id}"></td>
             <td>
-              <a th:text="*{name}" th:href="*{name}"></a>
+              <a th:text="*{name}" th:href="@{/urls/{id}(id=*{id})}"></a>
             </td>
             <td></td>
             <td></td>
@@ -37,8 +37,7 @@
             <a class="page-link" th:href="@{/urls(page=${page + 1},)}">Next</a>
           </li>
         </ul>
-
-
+      </nav>
 
     </div>
   </section>

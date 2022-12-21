@@ -12,6 +12,7 @@ import java.util.List;
 
 public final class UrlController {
 
+
     public static boolean validateUrl(String urlString) {
         try {
             new URL(urlString).toURI();
@@ -29,8 +30,31 @@ public final class UrlController {
         return url.getProtocol() + "://" + url.getHost() + port;
     }
 
+    public static Handler displayUrl = ctx -> {
 
+        long id = ctx.pathParamAsClass("id", Long.class).getOrDefault(null);
 
+        Url url = new QUrl()
+                .id.equalTo(id)
+                .findOne();
+
+        ctx.attribute("url", url);
+
+        ctx.render("check.html");
+    };
+
+    public static Handler checkUrl = ctx -> {
+
+//        long id = ctx.pathParamAsClass("id", Long.class).getOrDefault(null);
+//
+//        Url url = new QUrl()
+//                .id.equalTo(id)
+//                .findOne();
+//
+//        ctx.attribute("url", url);
+//
+//        ctx.render("check.html");
+    };
     public static Handler createUrl = ctx -> {
 
         String body = ctx.formParam("name");

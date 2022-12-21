@@ -4,9 +4,12 @@ import io.ebean.Model;
 import io.ebean.annotation.NotNull;
 import io.ebean.annotation.WhenCreated;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 public final class Url extends Model {
@@ -20,6 +23,9 @@ public final class Url extends Model {
     @WhenCreated
     private Instant createdAt;
 
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<UrlCheck> checks;
 
     public Url(String urlName) {
         name = urlName;
@@ -35,6 +41,10 @@ public final class Url extends Model {
 
     public Instant getCreatedAt() {
         return createdAt;
+    }
+
+    public List<UrlCheck> getArticles() {
+        return this.checks;
     }
 
     @Override
