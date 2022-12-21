@@ -9,7 +9,6 @@ import io.javalin.http.HttpCode;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-import java.util.stream.IntStream;
 
 public final class UrlController {
 
@@ -34,7 +33,7 @@ public final class UrlController {
 
     public static Handler createUrl = ctx -> {
 
-        String body = ctx.formParam("url");
+        String body = ctx.formParam("name");
         System.out.println("entered URL is " + body);
 
         if (!validateUrl(body)) {
@@ -67,53 +66,21 @@ public final class UrlController {
 
     public static Handler listUrls = ctx -> {
 
-//        int page = ctx.queryParamAsClass("page", Integer.class).getOrDefault(1) - 1;
-//        final int rowsPerPage = 10;
-//
-//        PagedList<Url> pagedUrls = new QUrl()
-//                .setFirstRow(page * rowsPerPage)
-//                .setMaxRows(rowsPerPage)
-//                .orderBy()
-//                .id.asc()
-//                .findPagedList();
-//
-//        List<Url> urls = pagedUrls.getList();
-//
-//        int lastPage = pagedUrls.getTotalPageCount() + 1;
-//        int currentPage = pagedUrls.getPageIndex() + 1;
-//
-//        List<Integer> pages = IntStream
-//                .range(1, lastPage)
-//                .boxed()
-//                .toList();
-//
-//        ctx.attribute("urls", urls);
-//        ctx.attribute("pages", pages);
-//        ctx.attribute("currentPage", currentPage);
-
-//        int page = ctx.queryParamAsClass("page", Integer.class).getOrDefault(1);
-//        int rowsPerPage = 10;
-//        int offset = (page - 1) * rowsPerPage;
-//
-//        PagedList<Url> pagedUrls = new QUrl()
-//                .setFirstRow(offset)
-//                .setMaxRows(rowsPerPage)
-//                .orderBy()
-//                .id.asc()
-//                .findPagedList();
+        int page = ctx.queryParamAsClass("page", Integer.class).getOrDefault(1);
+        int rowsPerPage = 10;
+        int offset = (page - 1) * rowsPerPage;
 
         PagedList<Url> pagedUrls = new QUrl()
-                //.setFirstRow(offset)
-                .setMaxRows(100)
+                .setFirstRow(offset)
+                .setMaxRows(rowsPerPage)
                 .orderBy()
                 .id.asc()
                 .findPagedList();
 
         List<Url> urls = pagedUrls.getList();
-        System.out.println(urls.get(0).toString());
 
         ctx.attribute("urls", urls);
-        //ctx.attribute("page", page);
+        ctx.attribute("page", page);
         ctx.render("show.html");
     };
 

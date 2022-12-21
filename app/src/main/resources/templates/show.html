@@ -6,27 +6,41 @@
 </head>
 <body>
   <section layout:fragment="content">
-    <div class="container-lg mt-5" th:each="urlc : ${urls}" th:object="${url}">
+    <div class="container-lg mt-5">
       <h1>Сайты</h1>
       <table class="table table-bordered table-hover mt-3">
         <tbody>
-        <tr>
-          <td>ID</td>
-          <td th:text="*{id}"></td>
-        </tr>
-        <tr>
-          <td>Имя</td>
-          <td th:text="*{name}"></td>
-        </tr>
-        <tr>
-          <td>Дата создания</td>
-          <td th:text="*{#temporals.format(createdAt, 'dd/MM/yyyy HH:mm')}"></td>
-        </tr>
+          <thead>
+            <th>ID</th>
+            <th>Имя</th>
+            <th>Последняя проверка</th>
+            <th>Код ответа</th>
+          </thead>
+        <tbody>
+          <tr  th:each="url : ${urls}" th:object="${url}">
+            <td th:text="*{id}"></td>
+            <td>
+              <a th:text="*{name}" th:href="*{name}"></a>
+            </td>
+            <td></td>
+            <td></td>
+          </tr>
         </tbody>
       </table>
+
+      <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center mt-5">
+          <li th:class="page-item">
+            <a class="page-link" th:href="@{/urls(page=${page - 1},term=${term})}">Previous</a>
+          </li>
+          <li th:class="page-item">
+            <a class="page-link" th:href="@{/urls(page=${page + 1},)}">Next</a>
+          </li>
+        </ul>
+
+
+
     </div>
   </section>
-
-
 </body>
 </html>
