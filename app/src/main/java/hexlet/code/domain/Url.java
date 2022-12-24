@@ -8,13 +8,15 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.GeneratedValue;
+
 import java.time.Instant;
 import java.util.List;
 
 @Entity
 public final class Url extends Model {
 
-    @Id
+    @Id @GeneratedValue
     private long id;
 
     @NotNull
@@ -43,16 +45,16 @@ public final class Url extends Model {
         return createdAt;
     }
 
-    public List<UrlCheck> getArticles() {
+    public List<UrlCheck> getChecks() {
         return this.checks;
     }
 
     @Override
     public String toString() {
-        return "Url{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", createdAt=" + createdAt +
-                '}';
+        return "Url{"
+                + "id=" + id
+                + ", name='" + name + '\''
+                + ", createdAt=" + createdAt
+                + '}';
     }
 }

@@ -22,8 +22,8 @@
             <td>
               <a th:text="*{name}" th:href="@{/urls/{id}(id=*{id})}"></a>
             </td>
-            <td></td>
-            <td></td>
+            <td th:text="*{!checks.isEmpty} ? *{#temporals.format(checks.get(0).getCreatedAt(), 'dd/MM/yyyy HH:mm')} : ''"></td>
+            <td th:text="*{!checks.isEmpty} ? *{checks.get(0).getStatusCode()} : ''"></td>
           </tr>
         </tbody>
       </table>

@@ -1,18 +1,15 @@
 package hexlet.code.domain.query.assoc;
 
 import hexlet.code.domain.Url;
-import hexlet.code.domain.UrlCheck;
 import hexlet.code.domain.query.QUrl;
 import io.ebean.Transaction;
 import io.ebean.typequery.Generated;
 import io.ebean.typequery.PInstant;
 import io.ebean.typequery.PLong;
-import io.ebean.typequery.PScalar;
 import io.ebean.typequery.PString;
 import io.ebean.typequery.TQAssocBean;
 import io.ebean.typequery.TQProperty;
 import io.ebean.typequery.TypeQueryBean;
-import java.util.List;
 
 /**
  * Association query bean for AssocUrl.
@@ -26,7 +23,7 @@ public class QAssocUrl<R> extends TQAssocBean<Url,R> {
   public PLong<R> id;
   public PString<R> name;
   public PInstant<R> createdAt;
-  public PScalar<R, List<UrlCheck>> checks;
+  public QAssocUrlCheck<R> checks;
 
   /**
    * Eagerly fetch this association loading the specified properties.

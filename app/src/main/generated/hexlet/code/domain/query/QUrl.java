@@ -1,7 +1,7 @@
 package hexlet.code.domain.query;
 
 import hexlet.code.domain.Url;
-import hexlet.code.domain.UrlCheck;
+import hexlet.code.domain.query.assoc.QAssocUrlCheck;
 import io.ebean.Database;
 import io.ebean.FetchGroup;
 import io.ebean.Query;
@@ -9,11 +9,9 @@ import io.ebean.Transaction;
 import io.ebean.typequery.Generated;
 import io.ebean.typequery.PInstant;
 import io.ebean.typequery.PLong;
-import io.ebean.typequery.PScalar;
 import io.ebean.typequery.PString;
 import io.ebean.typequery.TQRootBean;
 import io.ebean.typequery.TypeQueryBean;
-import java.util.List;
 
 /**
  * Query bean for Url.
@@ -37,7 +35,7 @@ public class QUrl extends TQRootBean<Url,QUrl> {
   public PLong<QUrl> id;
   public PString<QUrl> name;
   public PInstant<QUrl> createdAt;
-  public PScalar<QUrl, List<UrlCheck>> checks;
+  public QAssocUrlCheck<QUrl> checks;
 
 
   /**
@@ -109,6 +107,6 @@ public class QUrl extends TQRootBean<Url,QUrl> {
     public static PLong<QUrl> id = _alias.id;
     public static PString<QUrl> name = _alias.name;
     public static PInstant<QUrl> createdAt = _alias.createdAt;
-    public static PScalar<QUrl, List<UrlCheck>> checks = _alias.checks;
+    public static QAssocUrlCheck<QUrl> checks = _alias.checks;
   }
 }

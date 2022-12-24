@@ -38,6 +38,7 @@ public final class UrlController {
         return url.getProtocol() + "://" + url.getHost() + port;
     }
 
+
     public static Handler displayUrl = ctx -> {
 
         long id = ctx.pathParamAsClass("id", Long.class).getOrDefault(null);
@@ -62,6 +63,7 @@ public final class UrlController {
 
         ctx.render("check.html");
     };
+
 
     public static Handler checkUrl = ctx -> {
 
@@ -95,9 +97,11 @@ public final class UrlController {
         ctx.sessionAttribute("flash-type", "success");
         ctx.redirect("/urls/" + id);
     };
+
+
     public static Handler createUrl = ctx -> {
 
-        String body = ctx.formParam("name");
+        String body = ctx.formParam("url");
         System.out.println("entered URL is " + body);
 
         if (!validateUrl(body)) {
@@ -128,20 +132,25 @@ public final class UrlController {
         ctx.redirect("/urls");
     };
 
+
     public static Handler listUrls = ctx -> {
 
         int page = ctx.queryParamAsClass("page", Integer.class).getOrDefault(1);
         int rowsPerPage = 10;
         int offset = (page - 1) * rowsPerPage;
 
-        PagedList<Url> pagedUrls = new QUrl()
+        QUrl url = QUrl.alias();
+        QUrlCheck urlCheck = QUrlCheck.alias();
+
+        List<Url> urls = new QUrl()
+                .select(url.id, url.name)
                 .setFirstRow(offset)
                 .setMaxRows(rowsPerPage)
                 .orderBy()
                 .id.asc()
-                .findPagedList();
-
-        List<Url> urls = pagedUrls.getList();
+                .checks.fetch(urlCheck.statusCode, urlCheck.createdAt)
+                .orderBy().checks.createdAt.desc()
+                .findPagedList().getList();
 
         ctx.attribute("urls", urls);
         ctx.attribute("page", page);

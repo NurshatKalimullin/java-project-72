@@ -33,6 +33,7 @@ dependencies {
     implementation 'io.ebean:ebean:12.12.1'
     implementation 'io.ebean:ebean-ddl-generator:12.12.1'
     implementation 'io.ebean:ebean-querybean:12.12.1'
+    implementation 'commons-validator:commons-validator:1.7'
     implementation 'io.ebean:ebean-migration:12.12.1'
     implementation 'io.ebean:ebean-annotation:7.3'
     annotationProcessor 'io.ebean:querybean-generator:12.12.1'
