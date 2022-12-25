@@ -188,7 +188,8 @@ class AppTests {
     @Test
     void testCheckUrl() throws IOException {
 
-        String fakeContent = Files.readString(Paths.get("src/test/resources/mock/fake.html"), StandardCharsets.US_ASCII);
+        String fakeContent = Files.readString(Paths.get("src/test/resources/mock/fake.html"),
+                StandardCharsets.US_ASCII);
 
 
         // Create a MockWebServer. These are lean enough that you can create a new
