@@ -81,7 +81,7 @@ class AppTests {
     @Test
     void testAddUrl() {
 
-        String testUrl = "https://www.example.com";
+        String testUrl = "https://en.wikipedia.org";
 
         HttpResponse<String> responsePost = Unirest
                 .post(baseUrl + "/urls")
@@ -116,7 +116,7 @@ class AppTests {
     @Test
     void testNormalizeUrl() {
 
-        String testUrl = "https://www.example.com";
+        String testUrl = "https://ebean.io";
         String endpoint = "/here/we/go/";
 
         HttpResponse<String> responsePost = Unirest
