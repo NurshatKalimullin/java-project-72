@@ -9,6 +9,9 @@ clean:
 build:
 	make -C app build
 
+start:
+	make -C app start
+
 install:
 	make -C app install
 
@@ -18,17 +21,14 @@ start-dist:
 generate-migrations:
 	make -C app generate-migrations
 
-run:
-	make -C app run
+lint:
+	make -C app lint
 
 test:
 	make -C app test
 
 report:
 	make -C app report
-
-lint:
-	make -C app lint
 
 update-deps:
 	make -C app update-deps
