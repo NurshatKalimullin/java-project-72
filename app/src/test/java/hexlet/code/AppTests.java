@@ -22,6 +22,10 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -247,6 +251,23 @@ class AppTests {
         server.shutdown();
 
     }
+
+
+//    @Test
+//    void dropTables() throws SQLException {
+//        String jdbcURL = "jdbc:h2:./database";
+//        String username = "sa";
+//        String password = "sa";
+//
+//        Connection connection = DriverManager.getConnection(jdbcURL, username, password);
+//        System.out.println("Connected to H2 in-memory database.");
+//        Statement statement = connection.createStatement();
+//        //statement.execute("DROP ALL OBJECTS");
+//        //statement.execute("DROP table url");
+//        //statement.execute("DROP table url_check");
+//        System.out.println("Created table.");
+//        connection.close();
+//    }
 
 
 }

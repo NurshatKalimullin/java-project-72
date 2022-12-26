@@ -16,7 +16,7 @@ import java.util.List;
 @Entity
 public final class Url extends Model {
 
-    @Id @GeneratedValue
+    @Id
     private long id;
 
     @NotNull
