@@ -201,9 +201,6 @@ class AppTests {
         // Schedule some responses.
         server.enqueue(new MockResponse().setBody(fakeContent));
 
-        // Start the server.
-        //server.start();
-
 
         HttpResponse<?> responsePost = Unirest
                 .post(baseUrl + "/urls")
@@ -248,22 +245,6 @@ class AppTests {
 
     }
 
-
-//    @Test
-//    void dropTables() throws SQLException {
-//        String jdbcURL = "jdbc:h2:./database";
-//        String username = "sa";
-//        String password = "sa";
-//
-//        Connection connection = DriverManager.getConnection(jdbcURL, username, password);
-//        System.out.println("Connected to H2 in-memory database.");
-//        Statement statement = connection.createStatement();
-//        //statement.execute("DROP ALL OBJECTS");
-//        //statement.execute("DROP table url");
-//        //statement.execute("DROP table url_check");
-//        System.out.println("Created table.");
-//        connection.close();
-//    }
 
 
 }
