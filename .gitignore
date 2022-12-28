@@ -89,3 +89,6 @@ fabric.properties
 
 # DB data
 app/database.mv.db
+
+# Generated code
+app/src/main/generated/
