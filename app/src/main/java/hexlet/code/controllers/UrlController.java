@@ -7,6 +7,7 @@ import hexlet.code.domain.query.QUrlCheck;
 import io.ebean.PagedList;
 import io.javalin.http.Handler;
 import io.javalin.http.HttpCode;
+import io.javalin.http.NotFoundResponse;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 
@@ -15,21 +16,11 @@ import java.net.URL;
 import java.util.List;
 import java.util.Objects;
 
+import kong.unirest.UnirestException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 public final class UrlController {
-
-
-    public static boolean validateUrl(String urlString) {
-        try {
-            new URL(urlString).toURI();
-        } catch (Exception e) {
-            System.out.println(e);
-            return false;
-        }
-        return true;
-    }
 
 
     public static String normalizeUrl(String urlString) throws MalformedURLException {
@@ -47,13 +38,17 @@ public final class UrlController {
                 .id.equalTo(id)
                 .findOne();
 
+        if (url == null) {
+            throw new NotFoundResponse();
+        }
+
 
         PagedList<UrlCheck> pagedChecks = new QUrlCheck()
                 .setFirstRow(0)
                 .setMaxRows(1000)
                 .url.name.equalTo(url.getName())
                 .orderBy()
-                .id.asc()
+                .createdAt.desc()
                 .findPagedList();
 
         List<UrlCheck> checks = pagedChecks.getList();
@@ -73,60 +68,69 @@ public final class UrlController {
                 .id.equalTo(id)
                 .findOne();
 
-        HttpResponse<String> responseGet = Unirest
-                .post(url.getName())
-                .asString();
+        try {
+            HttpResponse<String> responseGet = Unirest
+                    .post(url.getName())
+                    .asString();
 
-        String content = responseGet.getBody();
+            String content = responseGet.getBody();
 
-        Document body = Jsoup.parse(content);
+            Document body = Jsoup.parse(content);
 
-        String h1 = body.selectFirst("h1") != null
-                ? Objects.requireNonNull(body.selectFirst("h1")).text()
-                : null;
-        String description = body.selectFirst("meta[name=description]") != null
-                ? Objects.requireNonNull(body.selectFirst("meta[name=description]")).attr("content")
-                : null;
+            String h1 = body.selectFirst("h1") != null
+                    ? Objects.requireNonNull(body.selectFirst("h1")).text()
+                    : null;
+            String description = body.selectFirst("meta[name=description]") != null
+                    ? Objects.requireNonNull(body.selectFirst("meta[name=description]")).attr("content")
+                    : null;
 
 
-        UrlCheck urlCheck = new UrlCheck(responseGet.getStatus(), body.title(), h1, description, url);
+            UrlCheck urlCheck = new UrlCheck(responseGet.getStatus(), body.title(), h1, description, url);
 
-        urlCheck.save();
+            urlCheck.save();
 
-        ctx.sessionAttribute("flash", "Страница успешно проверена");
-        ctx.sessionAttribute("flash-type", "success");
-        ctx.redirect("/urls/" + id);
+            ctx.sessionAttribute("flash", "Страница успешно проверена");
+            ctx.sessionAttribute("flash-type", "success");
+            ctx.redirect("/urls/" + id);
+
+
+        } catch (UnirestException e) {
+            ctx.sessionAttribute("flash", "Не удалось проверить страницу");
+            ctx.sessionAttribute("flash-type", "danger");
+        } catch (Exception e) {
+            ctx.sessionAttribute("flash", "Не удалось проверить страницу");
+            ctx.sessionAttribute("flash-type", "danger");
+        }
     };
 
 
     public static Handler createUrl = ctx -> {
 
-        String body = ctx.formParam("url");
-        System.out.println("entered URL is " + body);
+        String inputUrl = ctx.formParam("url");
+        System.out.println("entered URL is " + inputUrl);
 
-        if (!validateUrl(body)) {
-            System.out.println("Not valid URL");
+        URL parsedUrl;
+        try {
+            parsedUrl = new URL(inputUrl);
+        } catch (Exception e) {
             ctx.status(HttpCode.BAD_REQUEST);
             ctx.sessionAttribute("flash", "Некорректный URL");
             ctx.sessionAttribute("flash-type", "danger");
             ctx.redirect("/");
             return;
         }
-        String urlHost = new URL(body).getHost();
-        System.out.println("HOST is " + urlHost);
+        String urlHost = parsedUrl.getHost();
         if (checkExistence(urlHost)) {
             ctx.status(HttpCode.BAD_REQUEST);
             ctx.sessionAttribute("flash", "Страница уже существует");
             ctx.redirect("/");
             return;
         }
-        String urlForDB = normalizeUrl(body);
+
+        String urlForDB = normalizeUrl(inputUrl);
         Url url = new Url(urlForDB);
 
-
-        System.out.println("We are ready to save");
         url.save();
-        System.out.println("URL is saved");
         ctx.sessionAttribute("flash", "Страница успешно добавлена");
         ctx.sessionAttribute("flash-type", "success");
         ctx.redirect("/urls");
