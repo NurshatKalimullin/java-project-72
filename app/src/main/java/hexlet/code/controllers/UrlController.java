@@ -68,6 +68,10 @@ public final class UrlController {
                 .id.equalTo(id)
                 .findOne();
 
+        if (url == null) {
+            throw new NotFoundResponse();
+        }
+
         try {
             HttpResponse<String> responseGet = Unirest
                     .post(url.getName())
@@ -91,9 +95,6 @@ public final class UrlController {
 
             ctx.sessionAttribute("flash", "Страница успешно проверена");
             ctx.sessionAttribute("flash-type", "success");
-            ctx.redirect("/urls/" + id);
-
-
         } catch (UnirestException e) {
             ctx.sessionAttribute("flash", "Не удалось проверить страницу");
             ctx.sessionAttribute("flash-type", "danger");
@@ -101,6 +102,8 @@ public final class UrlController {
             ctx.sessionAttribute("flash", "Не удалось проверить страницу");
             ctx.sessionAttribute("flash-type", "danger");
         }
+
+        ctx.redirect("/urls/" + url.getId());
     };
 
 
